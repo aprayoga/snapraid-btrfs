@@ -685,6 +685,8 @@ find_configs_try() {
     if subvol="$("$my_snapper" -c "$config" get-config 2>/dev/null |
         sed -e '/^SUBVOLUME /!d' -e 's/^SUBVOLUME[ ]*| //')"
     then
+        # Strip trailing space
+        subvol="${subvol%"${subvol##*[![:space:]]}"}"
         while IFS=$' \t' read -r field1 field2 field3 ; do
             if [[ "$field1" =~ ^(data|disk)$ ]] &&
                    [[ "$field3" -ef "$subvol" ]]
